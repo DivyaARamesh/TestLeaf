@@ -32,10 +32,11 @@ driver.findElementByXPath("(//span[text()='Advanced']/following::input)[5]").sen
 driver.findElementByXPath("//button[text()='Find Leads']").click();
 
 driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+thread.sleep(3000);		
 
 //capture name of first resulting lead 
-String text = driver.findElementByXPath("//table[@class='x-grid3-row-table']").getText();
-System.out.println("First Resulting Lead for our search"+text);
+String text = driver.findElementByXPath("//table[@class='x-grid3-row-table']/tbody[1]/tr[1]/td[3]/div[1]/a[1]").getText();
+System.out.println("First Resulting Lead for our search "+text);
 
 //click on first resulting lead and clicking on duplicate lead
 driver.findElementByXPath("//table[@class='x-grid3-row-table']/tbody[1]/tr[1]/td[1]/div[1]/a[1]").click();
@@ -43,7 +44,7 @@ driver.findElementByXPath("(//a[@class='subMenuButton'])[1]").click();
 
 //getting the title and printing it
 String title = driver.getTitle();
- if (title=="Duplicate Lead") {
+ if (title.contains(Duplicate Lead)) {
 	 System.out.println("Title successfully verified as 'Duplicate Lead'");
 	
 }
@@ -62,7 +63,7 @@ String title = driver.getTitle();
  
  //verifying if duplicate lead name matches captured name of first result
  
- if (text==duplicateleadname) {
+ if (text.equals(duplicateleadname)) {
 	 System.out.println("Validation completed successfully");
 	
 }
