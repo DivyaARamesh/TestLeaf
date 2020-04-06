@@ -1,4 +1,4 @@
-package week1.day4;
+package week1.day6;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,14 +8,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LeafTaps_DetailedAutomatiion {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 ChromeDriver driver =new ChromeDriver();
 System.getProperty("webdriver.chrome.driver", "./chromedriver.exe");
 
 //launch the browser
 driver.get("http://leaftaps.com/opentaps/control/main");
-
+driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 //enter username password and click on login
 driver.findElement(By.id("username")).sendKeys("DemoSalesManager");
 driver.findElement(By.id("password")).sendKeys("crmsfa");
@@ -24,51 +24,47 @@ driver.findElement(By.className("decorativeSubmit")).sendKeys(Keys.ENTER);
 //click on crmsfa link
 driver.findElementByLinkText("CRM/SFA").sendKeys(Keys.ENTER);
 
-//CLICK on leads link and click on find leads ,email ,enter email and click on find leads button
+//CLICK on leads link and click on find leads 
 driver.findElementByLinkText("Leads").click();
 driver.findElementByLinkText("Find Leads").sendKeys(Keys.ENTER);
-driver.findElementByLinkText("Email").sendKeys(Keys.ENTER);
-driver.findElementByXPath("(//span[text()='Advanced']/following::input)[5]").sendKeys("babu@testleaf.com");
+
+//enter first name and click on find leads
+
+driver.findElementByXPath("(//input[@name='firstName'])[3]").sendKeys("Babu1");
 driver.findElementByXPath("//button[text()='Find Leads']").click();
 
 driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-thread.sleep(3000);		
+Thread.sleep(3000);
 
-//capture name of first resulting lead 
-String text = driver.findElementByXPath("//table[@class='x-grid3-row-table']/tbody[1]/tr[1]/td[3]/div[1]/a[1]").getText();
-System.out.println("First Resulting Lead for our search "+text);
-
-//click on first resulting lead and clicking on duplicate lead
+//Click on first resulting lead 
 driver.findElementByXPath("//table[@class='x-grid3-row-table']/tbody[1]/tr[1]/td[1]/div[1]/a[1]").click();
-driver.findElementByXPath("(//a[@class='subMenuButton'])[1]").click();
 
 //getting the title and printing it
 String title = driver.getTitle();
- if (title.contains(Duplicate Lead)) {
-	 System.out.println("Title successfully verified as 'Duplicate Lead'");
+System.out.println("The title is "+title);
+
+//click on edit
+driver.findElementByLinkText("Edit").click();
+
+//change company name
+driver.findElementById("updateLeadForm_companyName").clear();
+driver.findElementById("updateLeadForm_companyName").sendKeys("SocGen");
+
+//click updATE
+driver.findElementByClassName("smallSubmit").click();
+
+Thread.sleep(5000);
+
+//verifying whether company name has updated
+String companyName = driver.findElementById("viewLead_companyName_sp").getText();
+System.out.println(companyName);
+
+ if (companyName.contentEquals("SocGen")) {
+	 System.out.println("Company successfully updated as 'SocGen'");
 	
 }
  else
-	 System.out.println("Title not matching with 'Duplicate Lead'");
- //click on create lead
- 
- driver.findElementByLinkText("Create Lead").click();
- 
- //back to duplicate lead page
- driver.navigate().back();
- 
-// getting the duplicate lead name
- String duplicateleadname  = driver.findElementById("createLeadForm_firstName").getAttribute("value");
- System.out.println(duplicateleadname);
- 
- //verifying if duplicate lead name matches captured name of first result
- 
- if (text.equals(duplicateleadname)) {
-	 System.out.println("Validation completed successfully");
-	
-}
- else 
-	 System.out.println("Duplicate lead name doesnot match Captured FirstLead Name");
+	 System.out.println("Company not updated correctly");
  
  driver.close();
 }
