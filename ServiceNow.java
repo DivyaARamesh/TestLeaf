@@ -16,9 +16,9 @@ public class ServiceNow {
 
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
-ChromeDriver driver =new ChromeDriver();
-System.getProperty("webdriver.chrome.driver", "./chromedriver.exe");
 
+System.getProperty("webdriver.chrome.driver", "./chromedriver.exe");
+ChromeDriver driver =new ChromeDriver();
 //launch the browser
 driver.get(" https://dev92474.service-now.com/");
 
@@ -42,6 +42,7 @@ driver.findElementById("filter").sendKeys("Incident",Keys.ENTER);
 
 driver.findElementByXPath("//div[text()='Create New']").click();              
 
+Thread.sleep(3000);
 //switching to frame
 driver.switchTo().frame("gsft_main");
 //getting the text written inside the number field
@@ -54,24 +55,16 @@ System.out.println("The incidnet number is : "+incidentNumber);
  
  //switching to new window
  Set<String> windowHandles = driver.getWindowHandles();
- //handle of secondwindow and switching to it
+ //handle of second window and switching to it
  List<String> window =new ArrayList<String>(windowHandles);
  driver.switchTo().window(window.get(1));
  
  //getting the first name in the table
-  WebElement table = driver.findElementById("sys_user_table");
+ String string = driver.findElementByClassName("glide_ref_item_link").getText();
+ System.out.println("The first item in caller look up is "+ string);
+  driver.findElementByClassName("glide_ref_item_link").click();
   
-  //getting first row
-  WebElement firstRow = table.findElement(By.id("row_sys_user_62826bf03710200044e0bfc8bcbe5df1"));
   
-  //getting all columns in first row
-  
-  List<WebElement> columns = firstRow.findElements(By.tagName("td"));
-   
-   //getting third column
-  System.out.println("The value in the first column is "+ columns.get(2));
-   columns.get(2).click();
-   
    //switching back to main window
    
    driver.switchTo().window(window.get(0));
@@ -118,7 +111,7 @@ windows2.get(1);
 WebElement table2 = driver.findElementById("sys_user_group_table");
 
 //getting rows
- List<WebElement> allRowsTable2 = table.findElements(By.tagName("tr"));
+ List<WebElement> allRowsTable2 = table2.findElements(By.tagName("tr"));
 	 //getting 20th Row
  
  WebElement twentyRow = allRowsTable2.get(19);
